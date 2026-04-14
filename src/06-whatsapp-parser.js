@@ -38,6 +38,44 @@
  *   // => { date: "01/12/2024", time: "09:15", sender: "Priya",
  *   //      text: "I love this song", wordCount: 4, sentiment: "love" }
  */
+
 export function parseWhatsAppMessage(message) {
   // Your code here
+  //"DD/MM/YYYY, HH:MM - Sender Name: Message text here"
+  if(typeof message!=="string" || message instanceof String) return null;
+  if(message.indexOf(" - ")===-1 || message.indexOf(": ")===-1) return null;
+  let dataIdx=message.indexOf(", ");
+  // time
+  let timeIdx=message.indexOf(" - ");
+  console.log(timeIdx);
+  let senderIdx=message.indexOf(": ")
+  let date=message.slice(0,dataIdx).trim();
+  let time=message.slice(dataIdx+1,timeIdx).trim();
+  let sender=message.slice(timeIdx+2,senderIdx).trim();
+  let text=message.slice(senderIdx+1,message.length).trim();
+  let wordCount=text.split(" ").filter(word=>word!=="").length;
+  let lower = text.toLowerCase();
+    let sentiment = "neutral";
+
+    if (
+      lower.includes("😂") ||
+      lower.includes(":)") ||
+      lower.includes("haha")
+    ) {
+      sentiment = "funny";
+    } else if (
+      lower.includes("❤") ||
+      lower.includes("love") ||
+      lower.includes("pyaar")
+    ) {
+      sentiment = "love";
+    }
+  return {
+  date,
+  time,
+  sender,
+  text,
+  wordCount,
+  sentiment
+  };
 }

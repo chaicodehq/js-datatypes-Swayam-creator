@@ -29,4 +29,20 @@
  */
 export function maskAadhaar(aadhaarNumber) {
   // Your code here
+  if(typeof aadhaarNumber!=="string" || !aadhaarNumber instanceof String ) return "INVALID";
+  if(aadhaarNumber.length>12 || aadhaarNumber.length < 12) return "INVALID";
+  const hasDigit=aadhaarNumber.split('').some((d)=>isNaN(d) && d!=='');
+  if(hasDigit) return "INVALID";
+
+  let mask1=aadhaarNumber.slice(0,4);
+  let mask2=aadhaarNumber.slice(4,8);
+  let noMask=aadhaarNumber.slice(8,12);
+
+  mask1=mask1.replace(mask1,"X").repeat(4);
+  mask2=mask2.replace(mask2,"X").repeat(4);
+
+  let result= mask1 + '-' + mask2 + '-'+ noMask;
+
+ return result;
 }
+

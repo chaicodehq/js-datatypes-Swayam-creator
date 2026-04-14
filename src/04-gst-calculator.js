@@ -38,6 +38,35 @@
  *   calculateGST(500, "essential")
  *   // => { baseAmount: 500, gstRate: 0, gstAmount: 0, totalAmount: 500 }
  */
+ const categoryGST={
+ "essential"  : 0,
+ "food": 5,
+ "standard":12,
+ "electronics":18,
+ "luxury":28
+}
 export function calculateGST(amount, category) {
   // Your code here
+  if(typeof category!=="string" ||( typeof amount!=="number" || !Number.isFinite(amount)) || Number.isNaN(amount) ) return null;
+  if(!Object.keys(categoryGST).includes(category.toLowerCase())  || amount<=0) return null;
+  let baseAmount=amount;
+  let gstRate=categoryGST[category.toLowerCase()];
+  let gstAmount=0;
+  let totalAmount=0;
+  if(gstRate!=0){
+    gstAmount=(baseAmount*gstRate)/100;
+    totalAmount=baseAmount+parseFloat(gstAmount.toFixed(2));
+
+  }
+  else{
+   totalAmount=baseAmount;
+  }
+  totalAmount=parseFloat(totalAmount.toFixed(2))
+  gstAmount=parseFloat(gstAmount.toFixed(2))
+  return {
+  baseAmount,
+  gstRate,
+  gstAmount,
+  totalAmount
+  }
 }

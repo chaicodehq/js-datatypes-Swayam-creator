@@ -41,6 +41,28 @@
  *   generateLocalPass(null)
  *   // => "INVALID PASS"
  */
+ const classes=["first","second"];
+ const reqField=["name","from","to","classType"];
 export function generateLocalPass(passenger) {
-  // Your code here
+  if(typeof passenger!=="object" || passenger===null) return "INVALID PASS";
+  if(!classes.includes(passenger.classType.toLowerCase())) return "INVALID PASS";
+  if(!reqField.every(f=>passenger.hasOwnProperty(f))) return "INVALID PASS";
+  if(Object.entries(passenger).some(([k,v])=>typeof v!=="string"||v.trim()==="")) return "INVALID PASS";
+  let custName=passenger.name.toUpperCase();
+  let custFrom=passenger.from.toLowerCase();
+  let custTo=passenger.to.toLowerCase();
+  let custClass=passenger.classType.toUpperCase();
+  custFrom=custFrom.charAt(0).toUpperCase() + custFrom.slice(1);
+  custTo=custTo.charAt(0).toUpperCase() + custTo.slice(1);
+  let passId=custClass.charAt(0).toUpperCase() + custFrom.slice(0,3).toUpperCase() + custTo.slice(0,3).toUpperCase();
+
+ let res = `MUMBAI LOCAL PASS
+---
+Name: ${custName}
+From: ${custFrom}
+To: ${custTo}
+Class: ${custClass}
+Pass ID: ${passId}`;
+
+  return res;
 }
